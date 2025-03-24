@@ -25,7 +25,7 @@ def adminLogin(request):
             return redirect('admin-login')
 
         login(request,user)
-        return redirect('index')
+        return redirect('dashboard')
     return render(request,"dashboard/login.html")
 
 # -------------------------- Code for Login the Admin Dashboard (end) --------------------------
@@ -35,8 +35,8 @@ def adminLogin(request):
 
 
 @login_required(login_url="admin-login")
-def index(request):
-    return JsonResponse({"message":"Your Dashboard is ready"})
+def dashboard(request):
+    return render(request,"dashboard/dashboard.html")
 
 
 
