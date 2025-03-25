@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from dashboard.models import events,entries
 
 # Create your views here.
 
@@ -28,6 +29,11 @@ def adminLogin(request):
         return redirect('dashboard')
     return render(request,"dashboard/login.html")
 
+
+def adminLogout(request):
+    logout(request)
+    return redirect('admin-login')
+
 # -------------------------- Code for Login the Admin Dashboard (end) --------------------------
 
 
@@ -36,7 +42,76 @@ def adminLogin(request):
 
 @login_required(login_url="admin-login")
 def dashboard(request):
-    return render(request,"dashboard/dashboard.html")
+    events_obj = events.objects.all()
+    return render(request,"dashboard/dashboard.html",{"events_obj":events_obj})
+
+
+@login_required(login_url="admin-login")
+def eventDetails(request,id):
+    event = events.objects.get(id=id)
+    entries_obj = entries.objects.filter(event=event)
+    return render(request,"dashboard/event_details.html",{"event":event,"entries_obj":entries_obj})
+
+
+@login_required(login_url="admin-login")
+def editEvent(request,id):
+    event = events.objects.get(id=id)
+    entries_obj = entries.objects.filter(event=event)
+    return render(request,"dashboard/event-edit-details.html",{"event":event,"entries_obj":entries_obj})
+
+
+@login_required(login_url="admin-login")
+def editEventSave(request):
+    if request.method=="POST":
+        id = request.POST.get('id')
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        rules = request.POST.get('rules')
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+        tags = request.POST.get('tags')
+        price = request.POST.get('price')
+        mode = request.POST.get('mode')
+
+        event = events.objects.get(id=id)
+        event.title = title
+        event.content = content
+        event.rules = rules
+        event.from_date = from_date
+        event.to_date = to_date
+        event.tags = tags
+        event.price = price
+        event.mode = mode
+        event.save()
+        return redirect('event-details/'+str(id))
+    return JsonResponse("method not allowed",safe=False)
+
+
+@login_required(login_url="admin-login")
+def addEvent(request):
+    if request.method=="POST":
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        rules = request.POST.get('rules')
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+        tags = request.POST.get('tags')
+        price = request.POST.get('price')
+        mode = request.POST.get('mode')
+
+        event = events(title=title,content=content,rules=rules,from_date=from_date,to_date=to_date,tags=tags,price=price,mode=mode)
+        event.save()
+        return redirect('dashboard')
+    
+    return JsonResponse("method not allowed",safe=False)
+
+
+
+@login_required(login_url="admin-login")
+def deleteEvent(request,id):
+    event = events.objects.get(id=id)
+    event.delete()
+    return redirect('dashboard')
 
 
 
