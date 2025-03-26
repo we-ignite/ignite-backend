@@ -10,7 +10,7 @@ from django.conf import settings
 # Create your views here.
 
 def index(request):
-    events = Events.objects.all()
+    events = Events.objects.all()[:2]
     return render(request,'Home/index.html',{"events":events})
 
 
@@ -98,6 +98,9 @@ def send_payment_email(entry, payment_obj):
         'event_name': entry.event.title,
         'payment_id': payment_obj.payment_id,
         'amount': entry.event.price,
+        'event_date': entry.event.event_date,
+        'event_image_url': entry.event.poster_url,
+        'whatsapp_group_url': entry.event.whatsapp_group_url
     }
 
     html_message = render_to_string('Home/payment_confirmation.html', context)
@@ -152,3 +155,13 @@ def process_payment(request):
         print(e)
         messages.error(request, "Something went wrong. Please try again.")
         return redirect('index')
+    
+    
+def PrivacyPolicy(request):
+    return render(request, 'Home/privacy-policy.html')
+
+def TermsConditions(request):
+    return render(request, 'Home/term-condition.html')
+
+def CancelPolicy(request):
+    return render(request, 'Home/cancel-policy.html')

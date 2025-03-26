@@ -1,28 +1,238 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation</title>
+    
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { padding: 20px; background: #f4f4f4; border: 1px solid #ddd; border-radius: 10px; max-width: 600px; margin: 0 auto; }
-        h2 { color: #4CAF50; }
-        p { font-size: 16px; }
-        .footer { font-size: 12px; color: #888; margin-top: 20px; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #4a4a4a;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .greeting {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+        
+        .highlight {
+            color: #667eea;
+            font-weight: 500;
+        }
+        
+        .details-card {
+            background: #f8f9ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .detail-item {
+            margin-bottom: 10px;
+            display: flex;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+            min-width: 120px;
+            color: #667eea;
+        }
+        
+        .detail-value {
+            font-weight: 400;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 500;
+            margin: 15px 0;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .whatsapp-button {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .whatsapp-button:hover {
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+        }
+        
+        .button-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        
+        .event-image {
+            width: 100%;
+            border-radius: 8px;
+            margin: 15px 0;
+            max-height: 180px;
+            object-fit: cover;
+        }
+        
+        .whatsapp-group-info {
+            background: #f0fff4;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #25D366;
+        }
+        
+        .whatsapp-group-info h3 {
+            color: #128C7E;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .whatsapp-group-info h3 svg {
+            margin-right: 10px;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+            }
+            
+            .detail-label {
+                margin-bottom: 5px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>Thank you for your payment!</h2>
-        <p>Hi <strong>{{ team_name }}</strong>,</p>
-        <p>Your payment for the event <strong>{{ event_name }}</strong> scheduled on <strong>{{ event_date }}</strong> has been successfully received.</p>
-        <p><strong>Payment Details:</strong></p>
-        <ul>
-            <li>Payment ID: <strong>{{ payment_id }}</strong></li>
-            <li>Amount Paid: ₹<strong>{{ amount }}/-</strong></li>
-        </ul>
-        <p>We’re excited to see you there!</p>
-
-        <p class="footer">If you have any questions, feel free to contact us.</p>
+        <div class="header">
+            <h1>Payment Confirmed!</h1>
+        </div>
+        
+        <div class="content">
+            <p class="greeting">Hi <span class="highlight">{{ team_name }}</span>,</p>
+            
+            <p>Thank you for registering for <span class="highlight">{{ event_name }}</span>! Your payment has been successfully processed.</p>
+            
+            <!-- Optional: Add event image if available -->
+            <!-- <img src="{{ event_image_url }}" alt="{{ event_name }}" class="event-image"> -->
+            
+            <div class="details-card">
+                <div class="detail-item">
+                    <span class="detail-label">Event Date:</span>
+                    <span class="detail-value">{{ event_date }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Payment ID:</span>
+                    <span class="detail-value">{{ payment_id }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Amount Paid:</span>
+                    <span class="detail-value">₹{{ amount }}/-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Team Name:</span>
+                    <span class="detail-value">{{ team_name }}</span>
+                </div>
+            </div>
+            
+            <div class="whatsapp-group-info">
+                <h3>
+                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#25D366">
+                        <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+                    </svg>
+                    Join Our Event Community
+                </h3>
+                <p>Connect with other participants, get event updates, and ask questions in our official WhatsApp group:</p>
+                
+                <center>
+                    <a href="{{ whatsapp_group_url }}" class="cta-button whatsapp-button">
+                        <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="white">
+                            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+                        </svg>
+                        Join WhatsApp Group
+                    </a>
+                </center>
+                
+                <p><small>Note: This group is exclusively for registered participants. Please respect the community guidelines.</small></p>
+            </div>
+            
+            <p>We're excited to have you join us for this event! Here's what you can expect:</p>
+            <ul style="margin-left: 20px;">
+                <li>Engaging sessions with industry experts</li>
+                <li>Networking opportunities</li>
+                <li>Exciting prizes and giveaways</li>
+            </ul>
+            
+            
+            <p>If you have any questions, please don't hesitate to reach out to our support team.</p>
+            
+            <p>Best regards,<br>The Event Team</p>
+        </div>
+        
+        <div class="footer">
+            <p>© {% now "Y" %} Ignite Student Association. All rights reserved.</p>
+            <p>If you didn't make this payment, please contact us immediately.</p>
+        </div>
     </div>
 </body>
 </html>

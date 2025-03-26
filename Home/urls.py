@@ -9,4 +9,8 @@ urlpatterns = [
         path('event-register/<int:id>',eventRegister, name='event-register'),
         path('payment/', payment, name='payment'),
         path('process-payment/', process_payment, name='process-payment'),
+        path('PrivacyPolicy',PrivacyPolicy, name='PrivacyPolicy'),
+        path('Terms',TermsConditions, name='Terms'),
+        path('CancelPolicy',CancelPolicy, name='CancelPolicy'),
+
 ]

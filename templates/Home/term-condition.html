@@ -4,37 +4,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ignite Student Association - MIT Chh. Sambhajinagar</title>
+  <title>Terms & Conditions - Ignite Student Association</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-  
-  <!-- AOS Animation -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  
-  <!-- Swiper JS -->
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-  
-  <meta name="description" content="We are student-powered! Bridging the gap between books and careers, we ignite your future. Join our vibrant community for engaging events and workshops (online & offline) connecting academia to real-world industry insights. Get ready to explore your passions, network with experts, and launch your career journey!">
-  <meta property="theme-color" content="#FF6246">
-  <meta property="keywords" content="MIT Events, MIT Chh. Sambhajinagar Ignite Event, Ignite Event, Chh. Sambhajinagar College Events, MIT Chh. Sambhajinagar Student Association">
-  <meta property="og:title" content="Ignite Student Association - MIT Chh. Sambhajinagar">
-  <meta property="og:description" content="We are student-powered! Bridging the gap between books and careers, we ignite your future. Join our vibrant community for engaging events and workshops (online & offline) connecting academia to real-world industry insights. Get ready to explore your passions, network with experts, and launch your career journey!">
-  <meta property="og:image" content="https://res.cloudinary.com/dthrgos9e/image/upload/v1708432463/ignite-assets/events/zkk0hriqy2erukwbqsna.png">
-  <meta property="og:url" content="https://www.ignitestudentassociation.com/">
-  <meta property="og:site_name" content="Ignite Student Association - MIT Chh. Sambhajinagar">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:copyright" content="© https://www.ignitestudentassociation.com/, 2024. All rights reserved">
-  <meta property="twitter:title" content="Ignite Student Association - MIT Chh. Sambhajinagar">
-  <meta property="twitter:description" content="We are student-powered! Bridging the gap between books and careers, we ignite your future. Join our vibrant community for engaging events and workshops (online & offline) connecting academia to real-world industry insights. Get ready to explore your passions, network with experts, and launch your career journey!">
-  <meta property="twitter:image" content="https://res.cloudinary.com/dthrgos9e/image/upload/v1708432463/ignite-assets/events/zkk0hriqy2erukwbqsna.png">
-  <meta property="twitter:site" content="https://www.ignitestudentassociation.com/">
-  <meta property="msapplication-TileColor" content="#FF6246">
-  <meta property="msapplication-TileImage" content="https://res.cloudinary.com/dthrgos9e/image/upload/v1708432463/ignite-assets/events/zkk0hriqy2erukwbqsna.png">
   
   <style>
     @font-face {
@@ -54,12 +30,6 @@
       color: #FF6246;
     }
     .bg-background {
-      background-color: #FFF4F0;
-    }
-    .bg-event-backdrop {
-      background-color: #FFF4F0;
-    }
-    .event-backdrop {
       background-color: #FFF4F0;
     }
     /* Mobile menu styles */
@@ -82,20 +52,11 @@
     .mobile-menu-open .hamburger-icon rect {
       fill: white;
     }
-    /* Swiper fixes */
-    .swiper-container {
-      overflow: hidden;
-      width: 100%;
-    }
-    .swiper-slide {
-      width: 90%;
-      max-width: 800px;
-    }
   </style>
 </head>
 
 <body class="font-lato bg-background">
-  <!-- Navigation -->
+  <!-- Desktop Navigation -->
   <div class="fixed z-50 hidden h-screen lg:block">
     <div class="flex flex-col items-center xl:justify-center py-[140px] bg-primary absolute z-50 item-center w-[96px] h-screen">
       <a href="/" class="router-link-active router-link-exact-active underline-offset-8 decoration-white hover:underline underline-offset-8 underline decoration-white">
@@ -149,101 +110,74 @@
 
   <!-- Main Content -->
   <div class="pr-0 lg:pl-24 bg-background">
-    <!-- EventZen Section -->
-    <div class="px-6 font-lato lg:pl-8">
-      <h1 class="text-5xl pt-20 md:text-6xl text-center font-rampart lg:pt-8 text-[#ff6246]" data-aos="fade-down">{{ event.title }}</h1>
-      <div class="flex flex-col my-12 lg:flex-row">
-        <img src="https://res.cloudinary.com/dy7zpv1ij/image/upload/v1728973513/eventzen_poster_o9ycwt.png" class="w-full lg:w-1/2" data-aos="fade-right">
-        <div class="my-4 lg:w-1/2 lg:mx-4 lg:my-0" data-aos="fade-left">
-          <h1 class="px-2 mt-4 mb-8 text-2xl font-bold text-primary"><u>Price</u> :  ₹{{ event.price }}/-</h1>
-          <h1 class="px-2 mt-4 mb-8 text-2xl font-bold text-primary"><u>Event Date</u> : {{ event.event_date }}</h1>
-          <h1 class="px-2 mt-4 mb-8 text-2xl font-bold text-primary"><u>About the event:-</u></h1>
+    <!-- Terms & Conditions Content -->
+    <div class="px-6 pt-20 md:px-12 md:pt-8 md:mt-0 font-lato">
+      <h1 class="py-4 text-4xl font-bold text-primary">
+        Ignite Student Association Terms & Conditions
+      </h1>
+      <div class="w-full h-[2px] my-2 bg-slate-500"></div>
 
-          <p class="mx-2 my-4 text-lg">{{ event.content }}</p>
-
-          <h1 class="px-2 mt-4 mb-8 text-2xl font-bold text-primary"><u>Rules and Regulations of the event:-</u></h1>
-          <p class="mx-2 my-4 text-lg">{{ event.rules }}</p>
-
-          <h1 class="px-2 mt-4 mb-8 text-2xl font-bold text-primary"><u>Tags of the event:-</u></h1>
-          <p class="mx-2 my-4 text-lg">{{ event.tags }}</p>
-          
-          <div class="w-full p-4 my-6 bg-event-backdrop" data-aos="flip-up">
-            <div class="flex flex-col md:flex-row md:justify-around bg-[#FEE7D8] p-4 rounded-md">
-              <div class="flex items-center my-2">
-                <div class="">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 p-2 text-white bg-blue-500 rounded-full">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
-                  </svg>
-                </div>
-                <p class="mx-2 text-lg font-semibold">When:- {{ event.from_date }} - To - {{ event.to_date }}</p>
-              </div>
-              <div class="flex items-center my-2">
-                <div class="">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 p-2 text-white bg-blue-500 rounded-full">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5"></path>
-                  </svg>
-                </div>
-                <p class="mx-2 text-lg font-semibold">Type:- {{ event.mode }}</p>
-              </div>
-            </div>
-            <div class="flex justify-center items-center p-4 border-t border-primary/20 text-center">
-              <a href="/event-register/{{ event.id }}" class="px-4 py-2 w-full text-center bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
-                Register Now
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <p class="py-2 text-xl font-bold text-primary">
+        General Terms and Conditions for Ignite Student Association Events
+      </p>
       
+      <h1 class="py-2 text-lg font-semibold">1. Registration and Payment:</h1>
+      <ul class="pl-12 list-disc">
+          <li class="py-1">By registering for an Ignite Student Association event, you agree to these terms and conditions.</li>
+          <li class="py-1">Registration fees are non-refundable unless stated otherwise in the specific event details or covered by the cancellation policy.</li>
+          <li class="py-1">You are responsible for ensuring the accuracy of your registration information.</li>
+          <li class="py-1">Payment must be made in full at the time of registration.</li>
+      </ul>
       
+      <h1 class="py-2 text-lg font-semibold">2. Event Participation:</h1>
+      <ul class="pl-12 list-disc">
+          <li class="py-1">All participants must abide by the rules and regulations set forth by Ignite Student Association for each event.</li>
+          <li class="py-1">Ignite Student Association reserves the right to refuse entry or remove any participant who violates these rules or exhibits disruptive behavior.</li>
+          <li class="py-1">You are responsible for your own safety and well-being during the event.</li>
+      </ul>
       
-      <!-- Winners Section -->
-      <div class="bg-[#FEE7D8] relative py-8 px-6" data-aos="flip-left">
-        <h1 class="py-4 text-3xl lg:px-6 font-rampart">Winners: Yet to be announced</h1>
-        {% comment %} <div class="grid justify-center grid-cols-1 gap-2 py-2 lg:px-8 lg:grid-cols-5 md:grid-cols-3">
-          <div class="flex flex-col items-start text-lg">
-            <p class="font-rampart text-primary">1. Coding Competition</p>
-            <ol class="px-8 list-decimal">
-              <li>Sakshi dhole</li>
-              <li>Shaikh Arman</li>
-            </ol>
-          </div>
-          <div class="flex flex-col items-start text-lg">
-            <p class="font-rampart text-primary">2. Quiz Competition</p>
-            <ol class="px-8 list-decimal">
-              <li>Sudarshan Gawali</li>
-              <li>Virendra Bahure</li>
-            </ol>
-          </div>
-          <div class="flex flex-col items-start text-lg">
-            <p class="font-rampart text-primary">3. Essay writing</p>
-            <ol class="px-8 list-decimal">
-              <li>Anam Sayed</li>
-              <li>Mohammad bamzaina</li>
-            </ol>
-          </div>
-          <div class="flex flex-col items-start text-lg">
-            <p class="font-rampart text-primary">4. Template designing</p>
-            <ol class="px-8 list-decimal">
-              <li>Udit Choudhari</li>
-              <li>Radhika Patil</li>
-            </ol>
-          </div>
-          <div class="flex flex-col items-start text-lg">
-            <p class="font-rampart text-primary">5. Photography</p>
-            <ol class="px-8 list-decimal">
-              <li>Sanika parihar</li>
-              <li>Krishna malunjka</li>
-            </ol>
-          </div>
-        </div> {% endcomment %}
-      </div>
+      <h1 class="py-2 text-lg font-semibold">3. Content and Intellectual Property:</h1>
+      <ul class="pl-12 list-disc">
+          <li class="py-1">Any materials provided at the event, including presentations, handouts, and recordings, are the intellectual property of Ignite Student Association or its presenters.</li>
+          <li class="py-1">You may not distribute or copy these materials without written permission.</li>
+      </ul>
+      
+      <h1 class="py-2 text-lg font-semibold">4. Liability:</h1>
+      <ul class="pl-12 list-disc">
+          <li class="py-1">Ignite Student Association is not liable for any personal injury, loss, or damage incurred during an event.</li>
+          <li class="py-1">You participate at your own risk.</li>
+      </ul>
+      
+      <h1 class="py-2 text-lg font-semibold">5. Changes and Cancellations:</h1>
+      <ul class="pl-12 list-disc">
+          <li class="py-1">Ignite Student Association reserves the right to change or cancel an event at any time due to unforeseen circumstances or insufficient registration.</li>
+          <li class="py-1">In case of cancellation, a full refund will be issued to registered participants.</li>
+      </ul>
+      
+      <h1 class="py-2 text-lg font-semibold">6. Privacy:</h1>
+      <ul class="pl-12 list-disc">
+          <li class="py-1">Ignite Student Association collects personal information during registration for event management purposes.</li>
+          <li class="py-1">Your information will be kept confidential and will not be shared with third parties without your consent.</li>
+      </ul>
+      
+      <h1 class="py-2 text-lg font-semibold">7. Contact:</h1>
+      <ul class="pl-12 list-disc">
+          <li class="py-1">For any questions or concerns, please contact Ignite Student Association at <span class="underline">ignitestudentassociation@gmail.com</span></li>
+      </ul>
+      
+      <h1 class="py-2 text-lg font-semibold">8. Disclaimer:</h1>
+      <ul class="pl-12 list-disc">
+          <li class="py-1">These terms and conditions are subject to change without notice.</li>
+      </ul>
+      
+      <p class="py-4 italic">
+        Note: This is a general template, and you may need to adapt it to your specific needs and the types of events you organize. It is advisable to consult with a legal professional to ensure your terms and conditions are legally sound.
+      </p>
     </div>
-
 
     <!-- Footer -->
     <div class="border-t-2 flex md:flex-row flex-col md:items-center justify-between border-[#FFCDAD] mt-12 py-4 px-6 lg:px-12">
-      <p class="text-sm sm:text-base hidden md:block text-[#CA8D66]">Built by Team ignite</p>
+      <p class="text-sm sm:text-base hidden md:block text-[#CA8D66]">Built by Team Ignite </p>
       <div class="flex md:flex-row my-2 md:my-0 flex-col text-[#CA8D66]">
         <a href="/PrivacyPolicy" class="">
           <p class="flex text-md md:text-sm">Privacy policy <span class="hidden px-1 md:block">|</span></p>
@@ -255,14 +189,13 @@
           <p class="flex text-md md:text-sm">Cancellation policy</p>
         </a>
       </div>
-      <p class="text-md md:hidden mb-4 sm:text-lg text-[#CA8D66]">Built by Team ignite</p>
+      <p class="text-md md:hidden mb-4 sm:text-lg text-[#CA8D66]">Built by Team Ignite </p>
       <div class="flex">
         <a href="https://www.instagram.com/we_ignites/" rel="noopener noreferrer" target="_blank">
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 51 51" fill="none" class="mr-2 md:mr-0 md:mx-2">
             <path
             d="M25.5015 18.8955C21.9178 18.9372 19.0272 21.8959 19.069 25.4796C19.1107 29.0634 22.0694 31.9539 25.6531 31.9122C29.2369 31.8704 32.1274 28.9118 32.0857 25.328C32.0439 21.7443 29.0852 18.8537 25.5015 18.8955ZM45.0975 25.1765C45.0661 22.4813 45.0594 19.8103 44.8767 17.1218C44.6889 13.9988 43.9438 11.2339 41.6322 8.97548C39.3156 6.71227 36.539 6.03656 33.4125 5.9216C30.7156 5.80164 28.0451 5.85716 25.3549 5.8885C22.6597 5.91989 19.9888 5.92659 17.3003 6.10928C14.1772 6.29704 11.4123 7.04218 9.15391 9.3538C6.8907 11.6704 6.21499 14.447 6.10003 17.5735C5.98006 20.2704 6.03559 22.9408 6.06692 25.6311C6.09826 28.3213 6.10501 30.9972 6.28771 33.6857C6.47546 36.8087 7.22061 39.5737 9.53222 41.8321C11.8488 44.0953 14.6254 44.771 17.7519 44.8859C20.4488 45.0059 23.1193 44.9504 25.8095 44.9191C28.5046 44.8877 31.1756 44.881 33.8641 44.6983C36.9872 44.5105 39.7521 43.7654 42.0105 41.4537C44.2737 39.1372 44.9494 36.3606 45.0644 33.234C45.1893 30.542 45.1289 27.8716 45.0975 25.1765ZM25.694 35.4178C20.1523 35.4823 15.6279 31.0621 15.5633 25.5205C15.4988 19.9789 19.9191 15.4544 25.4607 15.3899C31.0023 15.3253 35.5267 19.7456 35.5913 25.2872C35.6558 30.8288 31.2356 35.3533 25.694 35.4178ZM35.9072 17.197C34.6134 17.2121 33.5564 16.1794 33.5413 14.8856C33.5262 13.5917 34.5589 12.5347 35.8528 12.5196C37.1466 12.5045 38.2036 13.5372 38.2187 14.8311C38.2227 15.1383 38.166 15.4433 38.0519 15.7286C37.9378 16.0139 37.7686 16.2738 37.5538 16.4936C37.3391 16.7134 37.0832 16.8887 36.8006 17.0094C36.5181 17.1301 36.2145 17.1938 35.9072 17.197Z"
             fill="#CA8D66" />
-          </svg>
         </a>
         <a href="https://github.com/IgniteStudentAssociation" rel="noopener noreferrer" target="_blank">
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 52 51" fill="none" class="mr-2 md:mr-0 md:mx-2">
@@ -279,66 +212,29 @@
   </div>
 
   <!-- Scripts -->
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Initialize AOS animation
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true
+    // Mobile Menu Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+      const hamburgerIcon = document.getElementById('hamburger-icon');
+      
+      mobileMenuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('open');
+        mobileMenuOverlay.classList.toggle('open');
+        // Toggle the class that changes the icon color
+        mobileMenuButton.classList.toggle('mobile-menu-open');
+      });
+      
+      mobileMenuOverlay.addEventListener('click', function() {
+        mobileMenu.classList.remove('open');
+        mobileMenuOverlay.classList.remove('open');
+        // Remove the class that changes the icon color
+        mobileMenuButton.classList.remove('mobile-menu-open');
+      });
     });
-  
-    // Initialize Swiper for events
-    const eventSwiper = new Swiper('.events-swiper', {
-      loop: true,
-      slidesPerView: 1,
-      spaceBetween: 20,
-      centeredSlides: true,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
-      pagination: {
-        el: '.events-swiper .swiper-pagination',
-        clickable: true,
-      },
-      breakpoints: {
-        640: {
-          slidesPerView: 1.2,
-          spaceBetween: 30,
-        },
-        768: {
-          slidesPerView: 1.5,
-          spaceBetween: 40,
-        },
-        1024: {
-          slidesPerView: 1,
-          spaceBetween: 50,
-        }
-      }
-    });
-  
-// Mobile Menu Toggle
-document.addEventListener('DOMContentLoaded', function() {
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-  const hamburgerIcon = document.getElementById('hamburger-icon');
-  
-  mobileMenuButton.addEventListener('click', function() {
-    mobileMenu.classList.toggle('open');
-    mobileMenuOverlay.classList.toggle('open');
-    mobileMenuButton.classList.toggle('mobile-menu-open');
-  });
-  
-  mobileMenuOverlay.addEventListener('click', function() {
-    mobileMenu.classList.remove('open');
-    mobileMenuOverlay.classList.remove('open');
-    mobileMenuButton.classList.remove('mobile-menu-open');
-  });
-});
-</script>
+  </script>
 </body>
 
-</html>
+</html> 

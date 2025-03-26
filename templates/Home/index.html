@@ -181,39 +181,57 @@
       </div>
     </div>
 
-    <!-- Events Section -->
-    <div class="relative overflow-hidden" id="eventpg">
-      <p class="font-rampart md:pl-14 text-center mt-12 lg:text-start text-[76px] lg:text-[96px] text-[#FF6246]">EVENT</p>
-      <div class="bg-event-backdrop">
-        <!-- Events Swiper -->
-        <div class="events-swiper swiper-container">
-          <div class="swiper-wrapper">
-
-            <!-- Event 1 -->
-             {% for event in events %}
-            <div class="swiper-slide">
-              <div class="flex justify-center my-2">
-                <div class="flex items-center justify-center my-2 drop-shadow-xl lg:my-0 md:flex-row lg:flex-row">
-                  <img src="https://res.cloudinary.com/dthrgos9e/image/upload/v1705476165/ignite-assets/hssite95pu6q67mzo8wf" class="z-30 drop-shadow-2xl hidden md:block lg:block w-[200px] lg:w-[400px]">
-                  <div class="flex flex-col justify-center items-center text-center lg:text-start rounded-lg drop-shadow-2xl lg:my-4 lg:h-[460px] z-30 bg-[#FFF4F0] py-4 px-8 sm:p-12">
-                    <img src="https://res.cloudinary.com/dthrgos9e/image/upload/v1705476165/ignite-assets/hssite95pu6q67mzo8wf" class="z-30 drop-shadow-2xl py-4 w-[240px] md:hidden lg:hidden lg:w-[400px]">
-                    <p class="text-[24px] mt-2 font-bold text-[#FF6246]">About this event</p>
-                    <p class="w-[250px] h-[200px] text-ellipsis lg:w-[430px] text-sm py-4 sm:py-4 md:py-0 lg:py-0 flex lg:items-center lg:text-[20px]">
-                      {{event.content}}
-                    </p>
+      <!-- Events Section -->
+      <div class="relative overflow-hidden" id="eventpg">
+        <p class="font-rampart md:pl-14 text-center mt-12 lg:text-start text-[76px] lg:text-[96px] text-[#FF6246]">EVENT</p>
+        <div class="bg-event-backdrop">
+          <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {% for event in events %}
+              <div class="rounded-lg overflow-hidden border border-primary bg-[#ffefe4] shadow-lg transition-transform duration-300 hover:scale-105" data-aos="zoom-in">
+                <div class="flex items-center p-4 space-x-2 bg-primary/10">
+                  <div class="w-6 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"></path>
+                    </svg>
                   </div>
+                  <div class="text-sm md:text-base">{{ event.from_date }} - {{ event.to_date }}</div>
+                </div>
+                
+                <a href="/events/{{ event.id }}" class="block">
+                  <img src="https://res.cloudinary.com/dthrgos9e/image/upload/v1705476165/ignite-assets/hssite95pu6q67mzo8wf" 
+                      alt="EventZen" 
+                      class="w-full h-48 md:h-56 object-contain p-4">
+                </a>
+                
+                <div class="flex items-center p-4 space-x-2 border-t border-primary/20">
+                  <div class="w-6 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"></path>
+                    </svg>
+                  </div>
+                  <div class="text-sm md:text-base capitalize">{{ event.mode }}</div>
+                </div>
+                
+                <div class="flex justify-between items-center p-4 border-t border-primary/20">
+                  <div class="text-xl md:text-2xl font-semibold capitalize">{{ event.title }}</div>
+                  <div class="text-xl md:text-2xl font-semibold capitalize">₹{{ event.price }}/-</div>
+                  <a href="/events/{{ event.id }}" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                    View
+                  </a>
                 </div>
               </div>
+              {% endfor %}
             </div>
-            {% endfor %}
             
+            <div class="text-center mt-8">
+              <a href="/events" class="inline-block px-8 py-3 bg-[#FF6246] text-white rounded-lg text-lg font-semibold hover:bg-[#FF6246]/90 transition-colors">
+                View All Events
+              </a>
+            </div>
           </div>
-          <div class="swiper-pagination"></div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
         </div>
       </div>
-    </div>
 
     <!-- Activities Section -->
     {% comment %} <div>
@@ -236,7 +254,7 @@
               <div class="swiper-slide">
                 <div class="flex justify-center w-full py-6">
                   <div class="flex w-[264px] justify-center items-center flex-col">
-                    <img src="https://res.cloudinary.com/dthrgos9e/image/upload/v1705138771/ignite-assets/dila94wql7ah3ktehmm8" class="w-[264px] rounded-xl duration-500 hover:scale-110">
+                    <img src="https://res.cloudinary.com/dwmflxog1/image/upload/v1743009484/Ignite/Event%20Posters/htwmojggmrltujc9jf6q.png" class="w-[264px] rounded-xl duration-500 hover:scale-110">
                     <p class="text-[24px] pt-4 text-[#585858] font-bold">Tanmayie Patil</p>
                     <p class="text-[#CA8D66]">President</p>
                     <!-- Social links -->
@@ -407,7 +425,7 @@
               </div>
               <p class="text-xl font-semibold">Phone Number</p>
             </div>
-            <div class="ml-12 text-md md:text-lg">+91-9112348575</div>
+            <div class="ml-12 text-md md:text-lg">+91-9545216658</div>
           </div>
           <div class="flex flex-col py-2">
             <div class="flex items-center lg:mt-2">

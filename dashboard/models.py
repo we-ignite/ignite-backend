@@ -9,14 +9,17 @@ class Events(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField(null=True,blank=True)
     rules = models.TextField(null=True,blank=True)
+    event_date =  models.DateField(null=True,blank=True)
     from_date = models.DateField(null=True,blank=True)
     to_date = models.DateField(null=True,blank=True)
     tags = models.CharField(max_length=200,null=True,blank=True)
     price = models.IntegerField(null=True,blank=True)
     mode = models.CharField(max_length=200,null=True,blank=True)
+    poster_url = models.URLField(max_length=500,null=True,blank=True)
+    whatsapp_group_url = models.URLField(max_length=500,null=True,blank=True)
     
     def __str__(self):
-        return f"Title: {self.title} ---- Content: {self.content} ---- Rules: {self.rules} ---- From Date: {self.from_date} ---- To Date: {self.to_date} ---- Tags: {self.tags} ---- Price: {self.price} ---- Mode: {self.mode}"   
+        return f"Title: {self.title} ---- Content: {self.content} ---- Rules: {self.rules} ---- Event Date : {self.event_date} ---- From Date: {self.from_date} ---- To Date: {self.to_date} ---- Tags: {self.tags} ---- Price: {self.price} ---- Mode: {self.mode}"   
     
     
 class Entries(models.Model):

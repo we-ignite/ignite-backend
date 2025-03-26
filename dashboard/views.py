@@ -72,6 +72,10 @@ def editEventSave(request):
         tags = request.POST.get('tags')
         price = request.POST.get('price')
         mode = request.POST.get('mode')
+        event_date = request.POST.get('event_date')
+        poster_url = request.POST.get('poster_url')
+        whatsapp_group_url = request.POST.get('whatsapp_group_url')
+
 
         event = Events.objects.get(id=id)
         event.title = title
@@ -82,6 +86,9 @@ def editEventSave(request):
         event.tags = tags
         event.price = price
         event.mode = mode
+        event.event_date = event_date
+        event.poster_url = poster_url
+        event.whatsapp_group_url = whatsapp_group_url
         event.save()
         return redirect('event-details/'+str(id))
     return JsonResponse("method not allowed",safe=False)
@@ -93,13 +100,16 @@ def addEvent(request):
         title = request.POST.get('title')
         content = request.POST.get('content')
         rules = request.POST.get('rules')
+        event_date = request.POST.get('event_date')
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
         tags = request.POST.get('tags')
         price = request.POST.get('price')
         mode = request.POST.get('mode')
+        poster_url = request.POST.get('poster_url')
+        whatsapp_group_url = request.POST.get('whatsapp_group_url')
 
-        event = Events(title=title,content=content,rules=rules,from_date=from_date,to_date=to_date,tags=tags,price=price,mode=mode)
+        event = Events(title=title,content=content,rules=rules,from_date=from_date,to_date=to_date,tags=tags,price=price,mode=mode,event_date = event_date,poster_url = poster_url,whatsapp_group_url = whatsapp_group_url)
         event.save()
         return redirect('dashboard')
     
