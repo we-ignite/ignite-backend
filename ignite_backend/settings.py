@@ -72,7 +72,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ignite_backend.wsgi.application'
+ASGI_APPLICATION = 'ignite_backend.asgi.application'
+# WSGI_APPLICATION = 'ignite_backend.wsgi.application'
 
 
 # Database
