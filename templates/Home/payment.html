@@ -1,0 +1,54 @@
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<h1>Payment for {{ event_name }}</h1>
+<p>Price: ₹{{ event_price }}/-</p>
+
+<!-- Razorpay Pay Now button -->
+<button id="rzp-button">Pay Now</button>
+
+<!-- SweetAlert2 and Razorpay scripts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    const options = {
+        key: "{{ razorpay_key }}", // Razorpay public key
+        amount: "{{ event_price }}" * 100,
+        currency: "INR",
+        name: "Event Payment",
+        description: "Payment for {{ event_name }}",
+        order_id: "{{ order_id }}",
+        handler: function (response) {
+            // SweetAlert2 success popup
+            Swal.fire({
+                title: "Payment Successful!",
+                text: "You will receive an email shortly.",
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then(() => {
+                // Redirect after user clicks "OK"
+                window.location.href = `/process-payment/?entry_id={{ entry.id }}&payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}&signature=${response.razorpay_signature}`;
+            });
+        },
+        prefill: {
+            name: "{{ entry.team_name }}",
+            email: "{{ entry.email }}",
+            contact: "{{ entry.Mobile }}"
+        },
+        theme: {
+            color: "#3399cc"
+        }
+    };
+
+    const rzp = new Razorpay(options);
+
+    // Trigger Razorpay popup
+    document.getElementById('rzp-button').onclick = function (e) {
+        rzp.open();
+        e.preventDefault();
+    };
+</script>

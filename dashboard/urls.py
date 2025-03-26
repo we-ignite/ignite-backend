@@ -8,7 +8,7 @@ urlpatterns = [
     
     
     path('add-event',addEvent, name='add-event'),
-    path('event-details/<int:id>',eventDetails, name='event-detail'),
+    path('event-details/<int:id>',eventDetails, name='event-detail-dashboard'),
     path('edit-event/<int:id>',editEvent, name='edit-event'),
     path('edit-event-save',editEventSave, name='edit-event-save'),
     path('delete-event/<int:id>',deleteEvent, name='delete-event'),

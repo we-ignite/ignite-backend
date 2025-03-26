@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventZen 2.0 - Register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #faf6f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #faf6f2;
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 4rem;
+            color: #ff6347;
+            text-shadow: 3px 3px 0 rgba(255, 99, 71, 0.3);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .poster {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .poster img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .form-container {
+            flex: 1;
+            min-width: 300px;
+            background-color: #ffded9;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-note {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #e5573f;
+        }
+
+        .center-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-icons a {
+            color: #ff6347;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .title {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Event : {{ event.title }}</h1>
+            <h2 class="subtitle">Register here</h2>
+        </div>
+        <div class="content">
+            <div class="poster">
+                <img src="https://res.cloudinary.com/dy7zpv1ij/image/upload/v1728973513/eventzen_poster_o9ycwt.png" alt="Event poster showing a person working on a computer">
+            </div>
+
+            <div class="form-container">
+                <form action="{% url 'event-register' event.id %}" method="post" id="registrationForm" novalidate>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="team-name">Team Name</label>
+                        <input type="hidden" name="event_id" value="{{ event.id }}">
+                        <input type="text" id="team-name" name="team_name" required minlength="3" maxlength="100">
+                        <div class="error-message" id="team-name-error"></div>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="members">Members Name <span class="form-note">(Separated with commas)</span></label>
+                        <input type="text" id="members" name="members" required minlength="3">
+                        <div class="error-message" id="members-error"></div>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="mobile">Mobile no.</label>
+                        <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" placeholder="1234567890" required>
+                        <div class="error-message" id="mobile-error"></div>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="error-message" id="email-error"></div>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="text" id="price" name="price" value="₹{{ event.price }}/-" readonly>
+                    </div>
+            
+                    <div class="center-btn">
+                        <button type="submit" class="btn">Proceed</button>
+                    </div>
+                </form>
+            </div>
+            
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('registrationForm');
+                
+                form.addEventListener('submit', function(event) {
+                    // Clear previous error messages
+                    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+                    
+                    let isValid = true;
+                    
+                    // Team Name validation
+                    const teamName = document.getElementById('team-name');
+                    if (!teamName.value.trim() || teamName.value.trim().length < 3) {
+                        document.getElementById('team-name-error').textContent = 'Team name must be at least 3 characters long';
+                        isValid = false;
+                    }
+                    
+                    // Members validation
+                    const members = document.getElementById('members');
+                    if (!members.value.trim() || members.value.trim().length < 3) {
+                        document.getElementById('members-error').textContent = 'Please enter at least one member name';
+                        isValid = false;
+                    }
+                    
+                    // Mobile validation
+                    const mobile = document.getElementById('mobile');
+                    const mobileRegex = /^[0-9]{10}$/;
+                    if (!mobileRegex.test(mobile.value)) {
+                        document.getElementById('mobile-error').textContent = 'Please enter a valid 10-digit mobile number';
+                        isValid = false;
+                    }
+                    
+                    // Email validation
+                    const email = document.getElementById('email');
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email.value)) {
+                        document.getElementById('email-error').textContent = 'Please enter a valid email address';
+                        isValid = false;
+                    }
+                    
+                    if (!isValid) {
+                        event.preventDefault();
+                    } else {
+                        // If form is valid, you could add additional handling here
+                        // For example, show a loading spinner or disable the submit button
+                        const submitButton = form.querySelector('button[type="submit"]');
+                        submitButton.disabled = true;
+                        submitButton.textContent = 'Processing...';
+                        
+                        // Form will submit normally if validation passes
+                    }
+                });
+                
+                // Add real-time validation for better UX
+                document.getElementById('mobile').addEventListener('input', function() {
+                    const mobileRegex = /^[0-9]{0,10}$/;
+                    if (!mobileRegex.test(this.value)) {
+                        this.value = this.value.slice(0, -1);
+                    }
+                });
+            });
+            </script>
+            
+            <style>
+            .error-message {
+                color: #dc3545;
+                font-size: 0.875em;
+                margin-top: 0.25rem;
+            }
+            
+            input:invalid {
+                border-color: #dc3545;
+            }
+            
+            input:valid {
+                border-color: #28a745;
+            }
+            </style>
+        </div>
+
+        <div class="footer">
+            <div>Designed & Developed by Team Ignite</div>
+            <div class="social-icons">
+                <a href="#" aria-label="Instagram">⭕</a>
+                <a href="#" aria-label="GitHub">⭕</a>
+                <a href="#" aria-label="LinkedIn">⭕</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

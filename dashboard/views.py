@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from dashboard.models import events,entries
+from dashboard.models import Events,Entries
 
 # Create your views here.
 
@@ -42,21 +42,21 @@ def adminLogout(request):
 
 @login_required(login_url="admin-login")
 def dashboard(request):
-    events_obj = events.objects.all()
+    events_obj = Events.objects.all()
     return render(request,"dashboard/dashboard.html",{"events_obj":events_obj})
 
 
 @login_required(login_url="admin-login")
 def eventDetails(request,id):
-    event = events.objects.get(id=id)
-    entries_obj = entries.objects.filter(event=event)
+    event = Events.objects.get(id=id)
+    entries_obj = Entries.objects.filter(event=event)
     return render(request,"dashboard/event_details.html",{"event":event,"entries_obj":entries_obj})
 
 
 @login_required(login_url="admin-login")
 def editEvent(request,id):
-    event = events.objects.get(id=id)
-    entries_obj = entries.objects.filter(event=event)
+    event = Events.objects.get(id=id)
+    entries_obj = Entries.objects.filter(event=event)
     return render(request,"dashboard/event-edit-details.html",{"event":event,"entries_obj":entries_obj})
 
 
@@ -73,7 +73,7 @@ def editEventSave(request):
         price = request.POST.get('price')
         mode = request.POST.get('mode')
 
-        event = events.objects.get(id=id)
+        event = Events.objects.get(id=id)
         event.title = title
         event.content = content
         event.rules = rules
@@ -99,7 +99,7 @@ def addEvent(request):
         price = request.POST.get('price')
         mode = request.POST.get('mode')
 
-        event = events(title=title,content=content,rules=rules,from_date=from_date,to_date=to_date,tags=tags,price=price,mode=mode)
+        event = Events(title=title,content=content,rules=rules,from_date=from_date,to_date=to_date,tags=tags,price=price,mode=mode)
         event.save()
         return redirect('dashboard')
     
@@ -109,7 +109,7 @@ def addEvent(request):
 
 @login_required(login_url="admin-login")
 def deleteEvent(request,id):
-    event = events.objects.get(id=id)
+    event = Events.objects.get(id=id)
     event.delete()
     return redirect('dashboard')
 

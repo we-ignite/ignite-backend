@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     
     # Installed Apps
     'dashboard',
+    'Home',
 ]
 
 MIDDLEWARE = [
@@ -109,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -136,3 +137,16 @@ INSTALLED_APPS += ['corsheaders']
 MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+RAZORPAY_KEY_ID = "rzp_test_QQd4iMqsM9ccBI"
+RAZORPAY_KEY_SECRET = "WWKYxnbJvn4Y30aIvOGB4hGD"
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'waghajay304@gmail.com'
+EMAIL_HOST_PASSWORD = 'emrbwfwvdkumxvhx'
+DEFAULT_FROM_EMAIL = 'Your Event Team ignite@gmail.com'

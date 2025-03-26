@@ -371,10 +371,10 @@
             </div>
             
             <div class="action-btns">
-                <a href="/edit-event/{{ event.id }}" class="btn btn-primary">
+                <a href="/dashboard/edit-event/{{ event.id }}" class="btn btn-primary">
                     <i class="fas fa-edit"></i> Edit Event
                 </a>
-                <a href="/delete-event/{{ event.id }}" class="btn btn-danger" onclick="confirmDelete('{{ event.id }}')">
+                <a href="/dashboard/delete-event/{{ event.id }}" class="btn btn-danger" onclick="confirmDelete('{{ event.id }}')">
                     <i class="fas fa-trash"></i> Delete Event
                 </a>
                 <a href="#" class="btn btn-secondary">
@@ -393,22 +393,22 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Registration Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            {% comment %} <th>Status</th> {% endcomment %}
+                            {% comment %} <th>Actions</th> {% endcomment %}
                         </tr>
                     </thead>
                     <tbody>
-                        {% for participant in participants %}
+                        {% for entries in entries_obj %}
                         <tr>
-                            <td>{{ participant.name }}</td>
-                            <td>{{ participant.email }}</td>
-                            <td>{{ participant.registration_date }}</td>
-                            <td>
-                                <span class="status-badge {% if participant.status == 'confirmed' %}status-active{% else %}status-pending{% endif %}">
-                                    {{ participant.status|title }}
+                            <td>{{ entries.team_name }}</td>
+                            <td>{{ entries.email }}</td>
+                            <td>{{ entries.registration_date }}</td>
+                            {% comment %} <td>
+                                <span class="status-badge {% if entries.status == 'confirmed' %}status-active{% else %}status-pending{% endif %}">
+                                    {{ entries.status|title }}
                                 </span>
-                            </td>
-                            <td>
+                            </td> {% endcomment %}
+                            {% comment %} <td>
                                 <div class="action-btns" style="justify-content: flex-start; border-top: none; padding: 0; margin: 0;">
                                     <button class="btn-action edit" title="Edit" style="background-color: rgba(76, 201, 240, 0.1); color: var(--success-color);">
                                         <i class="fas fa-edit"></i>
@@ -417,7 +417,7 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
-                            </td>
+                            </td> {% endcomment %}
                         </tr>
                         {% empty %}
                         <tr>
