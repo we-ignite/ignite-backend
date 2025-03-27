@@ -153,7 +153,7 @@
     <div class="px-6 font-lato lg:pl-8">
       <h1 class="text-5xl pt-20 md:text-6xl text-center font-rampart lg:pt-8 text-[#ff6246]" data-aos="fade-down">{{ event.title }}</h1>
       <div class="flex flex-col my-12 lg:flex-row">
-        <img src="https://res.cloudinary.com/dy7zpv1ij/image/upload/v1728973513/eventzen_poster_o9ycwt.png" class="w-full lg:w-1/2" data-aos="fade-right">
+        <img src="{{ event.poster_url}}" class="w-full lg:w-1/2" data-aos="fade-right">
         <div class="my-4 lg:w-1/2 lg:mx-4 lg:my-0" data-aos="fade-left">
           <h1 class="px-2 mt-4 mb-8 text-2xl font-bold text-primary"><u>Price</u> :  ₹{{ event.price }}/-</h1>
           <h1 class="px-2 mt-4 mb-8 text-2xl font-bold text-primary"><u>Event Date</u> : {{ event.event_date }}</h1>
