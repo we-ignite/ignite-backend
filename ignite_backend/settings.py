@@ -187,6 +187,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CSRF_TRUSTED_ORIGINS = [
     "https://www.ignitestudentassociation.in/",
-    "https://www.ignitestudentassociation.in/",
+    "https://ignitestudentassociation.in/",
+    "https://www.ignite.internzze.com/",
+    "https://ignite.internzze.com/",
     "http://3.109.88.175/",
 ]
