@@ -5,6 +5,30 @@ from django.contrib import messages
 from django.urls import reverse
 import razorpay
 from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+import random
+from cashfree_pg.models.create_order_request import CreateOrderRequest
+from cashfree_pg.api_client import Cashfree
+from cashfree_pg.models.customer_details import CustomerDetails
+from cashfree_pg.models.order_meta import OrderMeta
+import urllib3
+
+# Suppress SSL warnings
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
+Cashfree.XClientId = "77107481798f19dd72ae4279d1470177"
+Cashfree.XClientSecret = "cfsk_ma_prod_c9c7c59366cd2247c9b04c54fb530be2_1b0e1aa0"
+Cashfree.XEnvironment = Cashfree.PRODUCTION
+x_api_version = "2023-08-01"
+
+
+# Cashfree.XClientId = "TEST10319890eb6dfbd817fd5b5759bd09891301"
+# Cashfree.XClientSecret = "cfsk_ma_test_95fc3f3ea67227e3f60c4582a3d783ff_4fe81163"
+# Cashfree.XEnvironment = Cashfree.SANDBOX
+# x_api_version = "2023-08-01"
 
 
 # Create your views here.
@@ -35,7 +59,8 @@ def eventRegister(request, id):
 
         try:
             event = Events.objects.get(id=id)
-            entry = Entries(event=event, team_name=team_name, members=members, Mobile=mobile, email=email)
+            customer_id = random.randint(100000, 999999)
+            entry = Entries(event=event,customer_id=customer_id, team_name=team_name, members=members, Mobile=mobile, email=email)
             entry.save()
 
             return redirect(reverse('payment') + f"?entry_id={entry.id}")
@@ -51,45 +76,145 @@ def eventRegister(request, id):
     
     
     
+import json
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.contrib import messages
+from dashboard.models import Entries  # Ensure Entries model is correctly imported
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 def payment(request):
     entry_id = request.GET.get('entry_id')
 
     try:
+        # Fetch entry details from the database
         entry = Entries.objects.get(id=entry_id)
         event = entry.event
         event_name = event.title
-        event_price = int(event.price * 100)
-        
+        event_price = float(event.price)
+
+        customer_id = str(entry.customer_id).zfill(3)
+        customer_phone = str(entry.Mobile)
+        order_amount = event_price
+
         if entry.payment_status:
             messages.success(request, "Payment already made for this entry.")
             return redirect('index')
 
-        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        # Create Cashfree Order Request
+        customer_details = CustomerDetails(
+            customer_id=customer_id,
+            customer_phone=customer_phone
+        )
+        order_meta = OrderMeta(
+            return_url=f"https://127.0.0.1:8000/verify_payment?order_id={entry.id}&order_status=PAID",
+            notify_url="https://127.0.0.1:8000/payment_notify/"
+        )
+        create_order_request = CreateOrderRequest(
+            order_amount=order_amount,
+            order_currency="INR",
+            customer_details=customer_details,
+            order_meta=order_meta
+        )
 
-        order_data = {
-            "amount": event_price,
-            "currency": "INR",
-            "receipt": f"entry_{entry.id}",
-            "payment_capture": 1,
-        }
-        order = client.order.create(data=order_data)
+        # Call Cashfree API
+        response = Cashfree().PGCreateOrder(x_api_version, create_order_request, None, None)
 
-        return render(request, 'Home/payment.html', {
-            "entry": entry,
-            "event_name": event_name,
-            "event_price": event.price,
-            "order_id": order["id"],
-            "razorpay_key": settings.RAZORPAY_KEY_ID,
-        })
+        logger.debug(f"Cashfree Response: {response.__dict__}")
+
+        if hasattr(response, 'data') and hasattr(response.data, 'order_status'):
+            order_entity = response.data
+            
+            print(order_entity)
+
+            if order_entity.order_status == 'ACTIVE':
+                return_url = f'https://127.0.0.1:8000/verify_payment?order_id={entry.id}&order_status=PAID&order_amount={order_amount}&payment_id={order_entity.order_id}'
+                notify_url = f'https://127.0.0.1:8000/payment_notify/'
+                
+                print()
+                print(return_url)
+                
+                logger.debug(f"Generated return URL: {return_url}")
+                return render(request, 'Home/payment.html', {
+                    "entry": entry,
+                    "event_name": event_name,
+                    "event_price": event.price,
+                    "order_id": order_entity.order_id,
+                    'payment_session_id': order_entity.payment_session_id,
+                    'return_url': return_url,
+                    'notify_url': notify_url
+                })
+
+        messages.error(request, "Failed to create order. Please try again.")
+        return redirect('payment_page')
 
     except Entries.DoesNotExist:
         messages.error(request, "Invalid entry. Please try again.")
         return redirect('index')
 
+    except Exception as e:
+        logger.error(f"Error processing payment: {e}")
+        messages.error(request, "Something went wrong while processing the payment.")
+        return redirect("payment_page")
 
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+
+ 
+def verify_payment(request):
+    """
+    Verify payment after Cashfree redirects the user post-payment.
+    """
+    order_id = request.GET.get("order_id")
+    payment_status = request.GET.get("order_status")  # Expected: PAID, FAILED, etc.
+    order_amount = request.GET.get("order_amount")
+    payment_id = request.GET.get("payment_id", "")
+
+    if not order_id or not payment_status:
+        messages.error(request, "Missing payment details.")
+        return redirect("index")  # Redirect to homepage
+
+    try:
+        entry = Entries.objects.get(id=int(order_id))
+
+        # Check if payment was already recorded
+        if Payment.objects.filter(entry=entry, order_id=order_id).exists():
+            messages.success(request, "Payment already recorded.")
+            return redirect("payment_success")
+
+        if payment_status == "PAID":
+            # Save payment details
+            payment = Payment.objects.create(
+                entry=entry,
+                payment_id=payment_id,
+                order_id=order_id,
+                payment_status=payment_status,  # Store PAID, FAILED, etc.  # Store UPI, Card, NetBanking, etc.
+                order_amount=order_amount  # Store transaction amount
+            )
+
+            # Update entry status
+            entry.payment_status = True
+            entry.save()
+
+            # Send confirmation email
+            send_payment_email(entry, payment)
+
+            messages.success(request, "Payment successful! Confirmation email sent.")
+            return redirect("payment_success")
+
+        messages.error(request, "Payment failed or canceled.")
+        return redirect("failure_page")
+
+    except Entries.DoesNotExist:
+        messages.error(request, "Invalid order ID.")
+        return redirect("index")
+
+    except Exception as e:
+        logger.error(f"Error verifying payment: {e}")
+        messages.error(request, "Something went wrong. Please contact support.")
+        return redirect("index")
+
 
 def send_payment_email(entry, payment_obj):
     subject = f"Payment Confirmation for {entry.event.title}"
@@ -110,52 +235,52 @@ def send_payment_email(entry, payment_obj):
 
     send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
 
-def process_payment(request):
-    entry_id = request.GET.get('entry_id')
-    payment_id = request.GET.get('payment_id')
-    order_id = request.GET.get('order_id')
-    signature = request.GET.get('signature')
+# def process_payment(request):
+#     entry_id = request.GET.get('entry_id')
+#     payment_id = request.GET.get('payment_id')
+#     order_id = request.GET.get('order_id')
+#     signature = request.GET.get('signature')
 
-    try:
-        entry = Entries.objects.get(id=entry_id)
+#     try:
+#         entry = Entries.objects.get(id=entry_id)
 
-        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+#         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
-        params_dict = {
-            'razorpay_order_id': order_id,
-            'razorpay_payment_id': payment_id,
-            'razorpay_signature': signature
-        }
+#         params_dict = {
+#             'razorpay_order_id': order_id,
+#             'razorpay_payment_id': payment_id,
+#             'razorpay_signature': signature
+#         }
 
-        # Verify Razorpay payment signature
-        if client.utility.verify_payment_signature(params_dict):
-            entry.payment_status = True
-            entry.save()
+#         if client.utility.verify_payment_signature(params_dict):
+#             entry.payment_status = True
+#             entry.save()
 
-            # Save payment details in the Payment model
-            payment_obj = Payment(
-                entry=entry,
-                payment_id=payment_id,
-                order_id=order_id,
-                signature=signature
-            )
-            payment_obj.save()
+#             payment_obj = Payment(
+#                 entry=entry,
+#                 payment_id=payment_id,
+#                 order_id=order_id,
+#                 signature=signature
+#             )
+#             payment_obj.save()
 
-            # Call the email sending function
-            send_payment_email(entry, payment_obj)
+#             send_payment_email(entry, payment_obj)
 
-            messages.success(request, "Payment successful! You will receive a confirmation email shortly.")
-            return redirect('event-detail', id=entry.event.id)
+#             messages.success(request, "Payment successful! You will receive a confirmation email shortly.")
+#             return redirect('event-detail', id=entry.event.id)
 
-        else:
-            messages.error(request, "Payment verification failed!")
-            return redirect('payment')
+#         else:
+#             messages.error(request, "Payment verification failed!")
+#             return redirect('payment')
 
-    except Exception as e:
-        print(e)
-        messages.error(request, "Something went wrong. Please try again.")
-        return redirect('index')
+#     except Exception as e:
+#         print(e)
+#         messages.error(request, "Something went wrong. Please try again.")
+#         return redirect('index')
     
+    
+def paymentSuccess(request):
+    return render(request, 'Home/payment_success.html')
     
 def PrivacyPolicy(request):
     return render(request, 'Home/privacy-policy.html')

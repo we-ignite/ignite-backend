@@ -24,6 +24,7 @@ class Events(models.Model):
     
 class Entries(models.Model):
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
+    customer_id = models.IntegerField(null=True, blank=True)
     team_name = models.CharField(max_length=200)
     members = models.TextField(null=True,blank=True)
     Mobile = models.IntegerField()
@@ -35,15 +36,18 @@ class Entries(models.Model):
         return f"Event: {self.event.title} ----  Name: {self.team_name} ---- Email: {self.email} ---- Mobile: {self.Mobile}"
     
     
-class Payment(models.Model):  # Capital "P"
+class Payment(models.Model):
     entry = models.ForeignKey(Entries, on_delete=models.CASCADE)
-    payment_id = models.CharField(max_length=200)
-    order_id = models.CharField(max_length=200)
-    signature = models.CharField(max_length=200)
-    
+    payment_id = models.CharField(max_length=200)  # Cashfree Payment ID
+    order_id = models.CharField(max_length=200)  # Cashfree Order ID
+    reference_id = models.CharField(max_length=200, blank=True, null=True)  # Cashfree Reference ID
+    payment_status = models.CharField(max_length=50)  # PAID, FAILED, etc.
+    payment_mode = models.CharField(max_length=100, blank=True, null=True)  # UPI, Card, NetBanking, etc.
+    order_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Transaction Amount
+    payment_date = models.DateTimeField(auto_now_add=True)  # Timestamp when payment was recorded
+
     def __str__(self):
-        return f"Entry: {self.entry.team_name} ---- Payment ID: {self.payment_id} ---- Order ID: {self.order_id} ---- Signature: {self.signature}"
-    
+        return f"Entry: {self.entry.team_name} | Payment ID: {self.payment_id} | Status: {self.payment_status}"
 
     
     

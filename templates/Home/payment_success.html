@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #faf6f2;
+            min-height: 100vh;
+        }
+        .success-card {
+            backdrop-filter: blur(16px) saturate(180%);
+            background-color: #faf6f2;
+            border-radius: 12px;
+            border: 1px solid rgba(209, 213, 219, 0.3);
+            text-align: center;
+        }
+        .success-icon {
+            color: #4CAF50;
+        }
+        .success-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+        .success-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="w-full max-w-md mx-auto">
+        <div class="success-card p-8 shadow-xl">
+            <div class="flex justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 success-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 10-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+            </div>
+
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">Payment Successful!</h1>
+            <p class="text-gray-600 mb-4">Thank you for your payment. Your transaction has been completed successfully.</p>
+            <p class="text-gray-600 mb-6">
+                You will receive an email shortly containing the WhatsApp group link.
+                Please join the group and make sure not to share the link with anyone.
+            </p>
+
+            <div class="pt-6">
+                <a href="{% url 'index' %}" class="success-button w-full py-3 px-6 rounded-lg text-white font-semibold text-lg block text-center">
+                    Go to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

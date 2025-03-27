@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-cjj5#tg=!^&r6^m0bi+iok1vrf#os_=0a7a2)t)-7coyvft*8=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["ignite.internzze.com", "www.ignite.internzze.com",'*']
+ALLOWED_HOSTS = ["ignite.internzze.com", "www.ignite.internzze.com",'ignitestudentassociation.in','www.ignitestudentassociation.in']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Installed Apps
     'dashboard',
     'Home',
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
