@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-cjj5#tg=!^&r6^m0bi+iok1vrf#os_=0a7a2)t)-7coyvft*8=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["ignite.internzze.com", "www.ignite.internzze.com"]
+ALLOWED_HOSTS = ["ignite.internzze.com", "www.ignite.internzze.com" ,'*']
 
 
 # Application definition
@@ -143,6 +143,11 @@ CORS_ALLOW_ALL_ORIGINS = True
 RAZORPAY_KEY_ID = "rzp_test_QQd4iMqsM9ccBI"
 RAZORPAY_KEY_SECRET = "WWKYxnbJvn4Y30aIvOGB4hGD"
 
+CASHFREE = {
+    'APP_ID': 'TEST10319890eb6dfbd817fd5b5759bd09891301',
+    'SECRET_KEY': 'cfsk_ma_test_95fc3f3ea67227e3f60c4582a3d783ff_4fe81163',
+    'TEST_MODE': True,  # Set to False for production
+}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
