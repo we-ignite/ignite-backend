@@ -171,3 +171,22 @@ LOGGING = {
         },
     },
 }
+
+
+
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Strict'
+
+
+CSRF_USE_SESSIONS = True
+
+USE_X_FORWARDED_PORT = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.ignitestudentassociation.in/",
+    "https://www.ignitestudentassociation.in/",
+    "http://3.109.88.175/",
+]
