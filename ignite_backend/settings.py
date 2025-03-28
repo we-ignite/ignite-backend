@@ -193,3 +193,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://ignite.internzze.com",
     "http://3.109.88.175"
 ]
+
+
+# python manage.py runserver_plus --cert-file cert.pem --key-file key.pem

@@ -14,5 +14,6 @@ urlpatterns = [
         path('CancelPolicy',CancelPolicy, name='CancelPolicy'),
         path('verify_payment', verify_payment, name='verify-payment'),
         path('payment-success', paymentSuccess, name='payment_success'),
+        path('payment-failure', paymentFailure, name='payment_failure'),
 
 ]

@@ -110,8 +110,8 @@ def payment(request):
             customer_phone=customer_phone
         )
         order_meta = OrderMeta(
-            return_url=f"https://ignitestudentassociation.in/verify_payment?order_id={entry.id}&order_status=PAID",
-            notify_url="https://ignitestudentassociation.in/payment_notify/"
+            return_url=f"https://127.0.0.1:8000/verify_payment?order_id={entry.id}&order_status=PAID",
+            notify_url="https://127.0.0.1:8000/payment_notify/"
         )
         create_order_request = CreateOrderRequest(
             order_amount=order_amount,
@@ -127,12 +127,15 @@ def payment(request):
 
         if hasattr(response, 'data') and hasattr(response.data, 'order_status'):
             order_entity = response.data
+        
             
             print(order_entity)
+            print()
+            print(order_entity.order_id)
 
             if order_entity.order_status == 'ACTIVE':
-                return_url = f'https://ignitestudentassociation.in/verify_payment?order_id={entry.id}&order_status=PAID&order_amount={order_amount}&payment_id={order_entity.order_id}'
-                notify_url = f'https://ignitestudentassociation.in/payment_notify/'
+                return_url = f'https://127.0.0.1:8000/verify_payment?entry_id={entry.id}&order_amount={order_amount}&payment_id={order_entity.order_id}&cf_order_id={order_entity.cf_order_id}'
+                notify_url = f'https://127.0.0.1:8000/payment_notify/'
                 
                 print()
                 print(return_url)
@@ -162,59 +165,105 @@ def payment(request):
 
 
  
+import requests
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.contrib import messages
+
 def verify_payment(request):
     """
     Verify payment after Cashfree redirects the user post-payment.
     """
-    order_id = request.GET.get("order_id")
-    payment_status = request.GET.get("order_status")  # Expected: PAID, FAILED, etc.
-    order_amount = request.GET.get("order_amount")
-    payment_id = request.GET.get("payment_id", "")
+    order_id = request.GET.get("entry_id")
+    cf_order_id = request.GET.get("payment_id")
 
-    if not order_id or not payment_status:
-        messages.error(request, "Missing payment details.")
-        return redirect("index")  # Redirect to homepage
+    # Validate input
+    if not order_id or not cf_order_id:
+        logger.error("Invalid payment details: Missing order_id or cf_order_id")
+        return JsonResponse("Invalid payment details", safe=False)  # Redirect to homepage
 
     try:
+        # Fetch the entry from the database
         entry = Entries.objects.get(id=int(order_id))
 
-        # Check if payment was already recorded
+        # Check if the payment is already recorded
         if Payment.objects.filter(entry=entry, order_id=order_id).exists():
-            messages.success(request, "Payment already recorded.")
-            return redirect("payment_success")
+            logger.info(f"Payment already recorded for order_id: {order_id}")
+            return JsonResponse("Payment already recorded", safe=False)  # Redirect to homepage
 
-        if payment_status == "PAID":
-            # Save payment details
-            payment = Payment.objects.create(
-                entry=entry,
-                payment_id=payment_id,
-                order_id=order_id,
-                payment_status=payment_status,  # Store PAID, FAILED, etc.  # Store UPI, Card, NetBanking, etc.
-                order_amount=order_amount  # Store transaction amount
-            )
+        # Determine the base URL based on the environment
+        base_url = "https://api.cashfree.com"
+        url = f"{base_url}/pg/orders/{cf_order_id}"
+        headers = {
+            "x-api-version": Cashfree.XApiVersion,
+            "x-client-id": Cashfree.XClientId,
+            "x-client-secret": Cashfree.XClientSecret,
+        }
 
-            # Update entry status
-            entry.payment_status = True
-            entry.save()
+        try:
+            # Make the API request to verify payment
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
 
-            # Send confirmation email
-            send_payment_email(entry, payment)
+            # Check if the response status is 200 OK
+            if response.status_code == 200:
+                payment_details = response.json()
+                order_status = payment_details.get("order_status", "FAILED")
 
-            messages.success(request, "Payment successful! Confirmation email sent.")
-            return redirect("payment_success")
+                # Log the API response for audit
+                logger.info(f"Payment verification response: {payment_details}")
 
-        messages.error(request, "Payment failed or canceled.")
-        return redirect("failure_page")
+                # Check if the payment was successful
+                if order_status == "PAID":
+                    payment = Payment.objects.create(
+                        entry=entry,
+                        payment_id=payment_details.get("cf_order_id"),
+                        order_id=order_id,
+                        payment_status="PAID",
+                        order_amount=payment_details.get("order_amount")
+                    )
+
+                    # Update entry payment status
+                    entry.payment_status = True
+                    entry.save()
+
+                    # Send confirmation email
+                    send_payment_email(entry, payment)
+
+                    messages.success(request, "Payment successful! Confirmation email sent.")
+                    return redirect("payment_success")
+
+                # Payment failed or canceled
+                logger.warning(f"Payment failed or canceled for order_id: {order_id}")
+                messages.error(request, "Payment failed or canceled.")
+                return redirect("payment_failure")
+
+            else:
+                # Non-200 status code
+                error_message = response.json().get("message", "Unknown error")
+                logger.error(f"Failed to verify payment: {error_message}")
+                messages.error(request, f"Payment verification failed: {error_message}")
+                return redirect("payment_failure")
+
+        except requests.RequestException as api_error:
+            # Log network or API errors
+            logger.error(f"Network error during payment verification: {api_error}")
+            messages.error(request, "Error verifying payment. Please try again later.")
+            return redirect("index")
 
     except Entries.DoesNotExist:
+        # Handle invalid entry ID
+        logger.error(f"Invalid order ID: {order_id}")
         messages.error(request, "Invalid order ID.")
         return redirect("index")
 
     except Exception as e:
-        logger.error(f"Error verifying payment: {e}")
+        # Handle generic errors
+        logger.error(f"Unexpected error during payment verification: {e}")
         messages.error(request, "Something went wrong. Please contact support.")
         return redirect("index")
-
+    
+    
 
 def send_payment_email(entry, payment_obj):
     subject = f"Payment Confirmation for {entry.event.title}"
@@ -281,6 +330,9 @@ def send_payment_email(entry, payment_obj):
     
 def paymentSuccess(request):
     return render(request, 'Home/payment_success.html')
+
+def paymentFailure(request):
+    return render(request, 'Home/payment_failure.html')
     
 def PrivacyPolicy(request):
     return render(request, 'Home/privacy-policy.html')
