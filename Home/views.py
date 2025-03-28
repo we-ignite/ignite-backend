@@ -110,8 +110,8 @@ def payment(request):
             customer_phone=customer_phone
         )
         order_meta = OrderMeta(
-            return_url=f"https://127.0.0.1:8000/verify_payment?order_id={entry.id}&order_status=PAID",
-            notify_url="https://127.0.0.1:8000/payment_notify/"
+            return_url=f"https://ignitestudentassociation.in/verify_payment?order_id={entry.id}&order_status=PAID",
+            notify_url="https://ignitestudentassociation.in/payment_notify/"
         )
         create_order_request = CreateOrderRequest(
             order_amount=order_amount,
@@ -134,8 +134,8 @@ def payment(request):
             print(order_entity.order_id)
 
             if order_entity.order_status == 'ACTIVE':
-                return_url = f'https://127.0.0.1:8000/verify_payment?entry_id={entry.id}&order_amount={order_amount}&payment_id={order_entity.order_id}&cf_order_id={order_entity.cf_order_id}'
-                notify_url = f'https://127.0.0.1:8000/payment_notify/'
+                return_url = f'https://ignitestudentassociation.in/verify_payment?entry_id={entry.id}&order_amount={order_amount}&payment_id={order_entity.order_id}&cf_order_id={order_entity.cf_order_id}'
+                notify_url = f'https://ignitestudentassociation.in/payment_notify/'
                 
                 print()
                 print(return_url)
