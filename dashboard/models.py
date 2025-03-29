@@ -24,16 +24,17 @@ class Events(models.Model):
     
 class Entries(models.Model):
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
-    customer_id = models.IntegerField(null=True, blank=True)
+    customer_id = models.BigIntegerField(null=True, blank=True)  # Changed to BigIntegerField
     team_name = models.CharField(max_length=200)
-    members = models.TextField(null=True,blank=True)
-    Mobile = models.IntegerField()
+    members = models.TextField(null=True, blank=True)
+    Mobile = models.BigIntegerField()  # Changed to BigIntegerField
     email = models.EmailField()
     registration_date = models.DateTimeField(default=now)
-    payment_status = models.BooleanField(default=False,null=True,blank=True)
-    
+    payment_status = models.BooleanField(default=False, null=True, blank=True)
+
     def __str__(self):
-        return f"Event: {self.event.title} ----  Name: {self.team_name} ---- Email: {self.email} ---- Mobile: {self.Mobile}"
+        return f"Event: {self.event.title} ---- Name: {self.team_name} ---- Email: {self.email} ---- Mobile: {self.Mobile}"
+
     
     
 class Payment(models.Model):
