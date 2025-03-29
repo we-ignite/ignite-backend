@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-cjj5#tg=!^&r6^m0bi+iok1vrf#os_=0a7a2)t)-7coyvft*8=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["ignite.internzze.com", "www.ignite.internzze.com",'ignitestudentassociation.in','www.ignitestudentassociation.in']
+ALLOWED_HOSTS = ["ignite.internzze.com", "www.ignite.internzze.com",'ignitestudentassociation.in','www.ignitestudentassociation.in','127.0.0.1']
 
 
 # Application definition
@@ -89,11 +89,18 @@ DATABASES = {
 }
 
 
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://neondb_owner:npg_MHtovma6l3LR@ep-morning-glade-a1otkgji-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ignite',
+        'USER': 'ignite',
+        'PASSWORD': 'ignite2025',
+        'HOST': 'ignite-db.czaqoy4qcn93.ap-south-1.rds.amazonaws.com',
+        'PORT': '5432',
+    }
 }
+
 
 
 # Password validation
