@@ -37,7 +37,8 @@ x_api_version = "2023-08-01"
 # x_api_version = "2023-08-01"
 
 
-CREDENTIALS_FILE = "/home/ubuntu/cred.json"
+# CREDENTIALS_FILE = "/home/ubuntu/cred.json"
+CREDENTIALS_FILE = "templates/Home/cred.json"
 
 # Google Sheets API setup
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
