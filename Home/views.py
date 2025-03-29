@@ -14,6 +14,12 @@ from cashfree_pg.api_client import Cashfree
 from cashfree_pg.models.customer_details import CustomerDetails
 from cashfree_pg.models.order_meta import OrderMeta
 import urllib3
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
+
 
 # Suppress SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -29,6 +35,18 @@ x_api_version = "2023-08-01"
 # Cashfree.XClientSecret = "cfsk_ma_test_95fc3f3ea67227e3f60c4582a3d783ff_4fe81163"
 # Cashfree.XEnvironment = Cashfree.SANDBOX
 # x_api_version = "2023-08-01"
+
+
+CREDENTIALS_FILE = "/home/ubuntu/cred.json"
+
+# Google Sheets API setup
+scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE, scope)
+client = gspread.authorize(creds)
+
+# Open your spreadsheet
+spreadsheet = client.open("Event 2025(April Registration Through Websites")
+sheet = spreadsheet.sheet1  # Get the first sheet
 
 
 # Create your views here.
@@ -229,6 +247,8 @@ def verify_payment(request):
 
                     # Send confirmation email
                     send_payment_email(entry, payment)
+                    created_at_str = entry.created_at.strftime("%Y-%m-%d %H:%M:%S")
+                    sheet.append_row([entry.event.title, entry.team_name, entry.email, entry.Mobile, entry.members, created_at_str])
 
                     messages.success(request, "Payment successful! Confirmation email sent.")
                     return redirect("payment_success")

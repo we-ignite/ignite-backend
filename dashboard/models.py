@@ -31,6 +31,7 @@ class Entries(models.Model):
     email = models.EmailField()
     registration_date = models.DateTimeField(default=now)
     payment_status = models.BooleanField(default=False, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True,null=True, blank=True)
 
     def __str__(self):
         return f"Event: {self.event.title} ---- Name: {self.team_name} ---- Email: {self.email} ---- Mobile: {self.Mobile}"
