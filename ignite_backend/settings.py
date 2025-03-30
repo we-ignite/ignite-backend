@@ -164,9 +164,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'waghajay304@gmail.com'
-EMAIL_HOST_PASSWORD = 'emrbwfwvdkumxvhx'
-DEFAULT_FROM_EMAIL = 'Your Event Team ignite@gmail.com'
+EMAIL_HOST_USER = 'ignitestudentassociation@gmail.com'
+EMAIL_HOST_PASSWORD = 'hmln hyqx zuhd kuaf'
+DEFAULT_FROM_EMAIL = 'Your Event Team ignitestudentassociation@gmail.com'
 
 
 LOGGING = {
