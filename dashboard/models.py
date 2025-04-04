@@ -25,7 +25,7 @@ class Events(models.Model):
 class Entries(models.Model):
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
     customer_id = models.BigIntegerField(null=True, blank=True)  # Changed to BigIntegerField
-    team_name = models.CharField(max_length=200)
+    team_name = models.CharField(max_length=200,null=True,blank=True)
     members = models.TextField(null=True, blank=True)
     Mobile = models.BigIntegerField()  # Changed to BigIntegerField
     email = models.EmailField()
@@ -34,7 +34,7 @@ class Entries(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True, blank=True)
 
     def __str__(self):
-        return f"Event: {self.event.title} ---- Name: {self.team_name} ---- Email: {self.email} ---- Mobile: {self.Mobile}"
+        return f"Event: {self.event.title} ---- Name: {self.team_name} ---- Email: {self.email} ---- Mobile: {self.Mobile} ---- Payment Status : {self.payment_status}"
 
     
     
