@@ -37,8 +37,8 @@ x_api_version = "2023-08-01"
 # x_api_version = "2023-08-01"
 
 
-# CREDENTIALS_FILE = "/home/ubuntu/cred.json"
-CREDENTIALS_FILE = "templates/Home/cred.json"
+CREDENTIALS_FILE = "/home/ubuntu/cred.json"
+# CREDENTIALS_FILE = "templates/Home/cred.json"
 
 # Google Sheets API setup
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
@@ -91,7 +91,7 @@ def eventRegister(request, id):
 
     if request.method == "GET":
         event = Events.objects.get(id=id)
-        if id == 7 or id == 4 or id == 6:
+        if id == 7 or id == 4 or id == 6 or id == 10:
             return render(request, 'Home/event-register.html', {"event": event,"dont_show_team_name": "dont_show_team_name"})
         else:
             return render(request, 'Home/event-register.html', {"event": event})
